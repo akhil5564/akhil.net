@@ -1,6 +1,5 @@
 import  { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const TotalAmountDisplay: React.FC = () => {
@@ -11,7 +10,7 @@ const TotalAmountDisplay: React.FC = () => {
   const validTotalAmount = totalAmount || 0;
 
   // States for date and time
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, ] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>('1pm');
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [finalAmount, setFinalAmount] = useState<number>(0);
@@ -56,16 +55,7 @@ const TotalAmountDisplay: React.FC = () => {
       {/* Form for date and time selection */}
       <form onSubmit={handleSubmit}>
         {/* Date Picker */}
-        <div>
-          <label>Select Date:</label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date: Date) => setSelectedDate(date)}
-            dateFormat="MMMM d, yyyy"
-            placeholderText="Select a date"
-          />
-        </div>
-
+        
         {/* Time Selector */}
         <div>
           <label>Select Time:</label>

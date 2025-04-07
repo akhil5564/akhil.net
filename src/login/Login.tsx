@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import React from 'react';
 
 const Login: FC = () => {
   const [username, setUsername] = useState('');
