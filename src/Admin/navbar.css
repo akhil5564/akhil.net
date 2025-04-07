@@ -1,0 +1,117 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fbfc;
+  color: #333; /* Set text color to dark gray for readability */
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #070707; /* Dark background for the navbar */
+  max-height: 10px;
+}
+
+.nbtn {
+  background-color: transparent;
+  border: none;
+  color: #e50914; /* Netflix red color */
+  cursor: pointer;
+  font-size: 20px; /* Larger button size for better UX */
+}
+
+/* Logo styles */
+.logo img {
+  height: 40px;
+}
+
+/* Menu items in navbar */
+.menu ul {
+  display: flex;
+  gap: 20px;
+}
+
+.menu li {
+  list-style: none;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+/* User avatar styles */
+.user .user-avatar {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dropdown-1 {
+width: 100%; 
+background-color: white;
+z-index: 2800; 
+margin-left: 150px;
+}
+
+/* Dropdown Menu Styles */
+
+li{
+  font-weight: 700;
+}
+
+/* Show dropdown when active */
+.dropdown-1.show {
+  opacity: 1;
+font-weight: 700;
+z-index: 1800;
+}
+
+/* Dropdown List */
+.dropdown-1 ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1800;
+}
+
+.dropdown-1 li {
+  z-index: 1200;
+  padding: 4px 8px; /* Adjust padding for smaller size */
+  cursor: pointer;
+  font-size: 12px; /* Smaller font size */
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.3s ease;
+  padding: 1rem;
+  font-weight: 900;
+  z-index: 1800;
+  
+}
+
+/* Remove bottom border from last item */
+.dropdown li:last-child {
+  border-bottom: none;
+}
+
+
+/* Make dropdown show on button click */
+.navbar button:hover + .dropdown,
+.navbar button:focus + .dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}

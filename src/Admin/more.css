@@ -1,0 +1,74 @@
+/* more.css */
+
+body {
+    background-color: white;
+    color: black; /* Change text color to black for contrast */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Use full viewport height */
+    overflow: hidden; /* Disable the page scroll */
+  }
+  
+  .usermanage,
+  .riskreport,
+  .timesetting,
+  .ticketlimits,
+  .Outdealerfilters,
+  .resultentry,
+  .sendtooutdealer,
+  .outdealersales,
+  .outdealerwinning,
+  .outdealerpnl,
+  .pofitreport {
+    background-color: #090101; /* Dark grey background for each section */
+    padding: .0008rem;
+    margin: .5rem ;
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  
+  
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Ensure even spacing between sections */
+    gap: 1rem; /* Gap between sections */
+    padding: 20px;
+  }
+  
+  h2 {
+    color: red;
+    text-align: center;
+    font-size: .8rem;
+    margin: .6rem 0;
+  }
+  
+  section {
+    background-color: #090101; /* Dark grey background for each section */
+    padding: .5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    min-width: 150px;
+    flex: 1 1 calc(33% - 2rem); /* Three columns layout, with flexible width */
+    box-sizing: border-box;
+  }
+  
+  section h2 {
+    color: red;
+    margin: 0;
+  }
+  
+  /* For smaller screen sizes, adjust layout */
+  @media (max-width: 768px) {
+    section {
+      flex: 1 1 calc(50% - 2rem); /* Two columns layout for medium screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    section {
+      flex: 1 1 100%; /* One column layout for small screens */
+    }
+  }
+  

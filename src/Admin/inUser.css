@@ -1,0 +1,87 @@
+/* inUser.css */
+
+/* General body styling */
+body {
+    background-color: rgb(245, 240, 240);
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  /* Header and user section */
+  .head, .users {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .head h2, .users h2 {
+    color: rgb(247, 242, 242);
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .head {
+    background-color: #0b0707; /* Dark grey background for the header */
+    padding: 0.5rem 2rem;
+  }
+  
+  .users {
+    background-color: #0b0707; /* Dark grey background for user section */
+    padding: 1rem;
+    padding-left: .2rem;
+  }
+  
+  /* Checkbox size */
+  input {
+    width: 35px;
+  }
+  
+  /* Create User button */
+  .createuser {
+    position: fixed; /* Fix the position at the bottom */
+    bottom: 20px; /* 20px from the bottom of the screen */
+    left: 80%;
+    transform: translateX(-50%); /* Center horizontally */
+    background-color: #070606; /* Red background */
+    padding: 1rem 1rem; /* Increased size */
+    border-radius: 100%; /* Rounded corners */
+    color: rgb(252, 249, 249);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem; /* Increase the icon size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  /* Icon inside the create user button */
+  .createuser svg {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Button Styles */
+  button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  button:focus {
+    outline: none; /* Remove default outline */
+  }
+  
+  button:active {
+    background-color: #990000; /* Even darker red on button click */
+  }
+  
