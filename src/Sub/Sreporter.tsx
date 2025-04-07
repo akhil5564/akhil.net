@@ -122,7 +122,7 @@ useEffect(() => {
   
     try {
       // Send a DELETE request to the backend to remove the container data
-      const response = await axios.delete(`http://localhost:5000/deleteContainer/${containerId}`);
+      const response = await axios.delete(`https://manu-netflix.onrender.com/deleteContainer/${containerId}`);
   
       if (response.status === 200) {
         // If the delete is successful, update the local state to remove the container from UI

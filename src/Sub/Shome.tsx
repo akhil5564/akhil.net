@@ -309,7 +309,7 @@ const Home: FC = () => {
       console.log("Table Rows:", tableRows);
   
       // Send data to backend
-      const response = await fetch('http://localhost:5000/addData', {  // Make sure to use the correct API URL
+      const response = await fetch('https://manu-netflix.onrender.com/addData', {  // Make sure to use the correct API URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, selectedTime: timeBlock, tableRows }),

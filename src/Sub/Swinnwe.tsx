@@ -337,11 +337,7 @@ const ResultsComponent: React.FC = () => {
         </div>
       )}
 
-      <div className="footer">
-        <div>Total Prize: {totalPrize.toFixed(2)}</div>
-        <div>Total Commission: {totalCommission.toFixed(2)}</div>
-        <div>Total Amount: {totalAmount.toFixed(2)}</div>
-      </div>
+    
     </div>
   );
 };

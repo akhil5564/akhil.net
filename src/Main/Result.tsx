@@ -143,7 +143,6 @@ const ResultsComponent: React.FC = () => {
       {/* Winning Results Table */}
       {winningResults.length > 0 && (
         <div className="winning-results">
-          <h3>Winning Results</h3>
           <table className="results-table">
             <thead>
                
