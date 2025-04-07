@@ -2,7 +2,6 @@ import { FC, useState, useEffect, ReactNode } from 'react';
 import './reporter.css';
 import { IconTrash } from '@tabler/icons-react';
 import axios from 'axios';
-import React from 'react';
 
 interface TableData {
   type: ReactNode;
