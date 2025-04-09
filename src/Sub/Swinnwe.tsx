@@ -226,40 +226,40 @@ const ResultsComponent: React.FC = () => {
 
   return (
     <div className="results-container">
-      <div className="date-time-picker">
-        <label>
-          Select From Date:
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedFromDate(e.target.value)}
-          />
-        </label>
+    <div className="date-time-picker">
+      <label>
+        Select From Date:
+        <input
+          type="date"
+          value={selectedFromDate}
+          onChange={(e) => setSelectedFromDate(e.target.value)} // Update From Date state
+        />
+      </label>
 
-        <label>
-          Select To Date:
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e: { target: { value: any; }; }) => selectedDate(e.target.value)}
-            min={selectedDate} // Make sure "To" date is not before "From" date
-          />
-        </label>
+      <label>
+        Select To Date:
+        <input
+          type="date"
+          value={selectedToDate}
+          onChange={(e) => setSelectedToDate(e.target.value)} // Update To Date state
+          min={selectedFromDate} // Ensure "To" date is not before "From" date
+        />
+      </label>
 
-        <label>
-          Select Time:
-          <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
-            <option value="">Select Time</option>
-            <option value="all">All Times</option>
-            <option value="1pm">1 PM</option>
-            <option value="3pm">3 PM</option>
-            <option value="6pm">6 PM</option>
-            <option value="8pm">8 PM</option>
-          </select>
-        </label>
+      <label>
+        Select Time:
+        <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+          <option value="">Select Time</option>
+          <option value="all">All Times</option>
+          <option value="1pm">1 PM</option>
+          <option value="3pm">3 PM</option>
+          <option value="6pm">6 PM</option>
+          <option value="8pm">8 PM</option>
+        </select>
+      </label>
 
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
 
       {winningResults.length > 0 && (
         <div className="winning-results">
