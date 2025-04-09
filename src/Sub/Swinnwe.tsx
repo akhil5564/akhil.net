@@ -29,10 +29,10 @@ const ResultsComponent: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { search } = useLocation();
-  const queryParams = new URLSearchParams(search);
-  const selectedDate = queryParams.get('date') || '';  // Get date from query params
-  
+  useLocation();
+  const [selectedDate, setSelectedDate] = useState<string>(''); // Initialize selectedDate with empty string or default value
+
+
   const [selectedTime, setSelectedTime] = useState<string>('');  // Default is empty
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
 
@@ -226,40 +226,41 @@ const ResultsComponent: React.FC = () => {
 
   return (
     <div className="results-container">
-    <div className="date-time-picker">
-      <label>
-        Select From Date:
-        <input
-          type="date"
-          value={selectedFromDate}
-          onChange={(e) => setSelectedFromDate(e.target.value)} // Update From Date state
-        />
-      </label>
+      <div className="date-time-picker">
+        <label>
+          Select From Date:
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedFromDate(e.target.value)}
+          />
+        </label>
 
-      <label>
-        Select To Date:
-        <input
-          type="date"
-          value={selectedToDate}
-          onChange={(e) => setSelectedToDate(e.target.value)} // Update To Date state
-          min={selectedFromDate} // Ensure "To" date is not before "From" date
-        />
-      </label>
+        <label>
+          Select To Date:
+          <input
+  type="date"
+  value={selectedDate}
+  onChange={(e: { target: { value: string; }; }) => setSelectedDate(e.target.value)} // Corrected here
+  min={selectedDate} // Make sure "To" date is not before "From" date
+/>
 
-      <label>
-        Select Time:
-        <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
-          <option value="">Select Time</option>
-          <option value="all">All Times</option>
-          <option value="1pm">1 PM</option>
-          <option value="3pm">3 PM</option>
-          <option value="6pm">6 PM</option>
-          <option value="8pm">8 PM</option>
-        </select>
-      </label>
+        </label>
 
-      <button onClick={handleSubmit}>Submit</button>
-    </div>
+        <label>
+          Select Time:
+          <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+            <option value="">Select Time</option>
+            <option value="all">All Times</option>
+            <option value="1pm">1 PM</option>
+            <option value="3pm">3 PM</option>
+            <option value="6pm">6 PM</option>
+            <option value="8pm">8 PM</option>
+          </select>
+        </label>
+
+        <button onClick={handleSubmit}>Submit</button>
+      </div>
 
       {winningResults.length > 0 && (
         <div className="winning-results">
