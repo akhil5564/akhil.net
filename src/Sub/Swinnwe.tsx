@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Main/result.css';
+import { useLocation } from 'react-router-dom';
 
 interface Result {
   ticket: string;
@@ -28,9 +29,11 @@ const ResultsComponent: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const [selectedFromDate, setSelectedFromDate] = useState<string>(''); // From Date
-  const [selectedToDate, setSelectedToDate] = useState<string>(''); // To Date
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const selectedDate = queryParams.get('date') || '';  // Get date from query params
+  const selectedTime = queryParams.get('time') || '';  // Get time from query params
+  
   const [selectedTime, setSelectedTime] = useState<string>('');  // Default is empty
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
 
@@ -72,31 +75,20 @@ const ResultsComponent: React.FC = () => {
 
   const handleSubmit = () => {
     let filtered = results;
-
-    // If "from" and "to" dates are selected, filter by both
-    if (selectedFromDate && selectedToDate) {
-      filtered = results.filter(
-        (result) =>
-          new Date(result.date) >= new Date(selectedFromDate) &&
-          new Date(result.date) <= new Date(selectedToDate)
-      );
+  
+    // Filter by selected date
+    if (selectedDate) {
+      filtered = filtered.filter((result) => result.date === selectedDate);
     }
-    // If only "from" date is selected
-    else if (selectedFromDate) {
-      filtered = results.filter((result) => new Date(result.date) >= new Date(selectedFromDate));
-    }
-    // If only "to" date is selected
-    else if (selectedToDate) {
-      filtered = results.filter((result) => new Date(result.date) <= new Date(selectedToDate));
-    }
-
+  
     // If time is selected, filter by time as well
     if (selectedTime && selectedTime !== 'all') {
       filtered = filtered.filter((result) => result.time === selectedTime);
     }
-
+  
     setFilteredResults(filtered);
   };
+  
 
   const getABMatches = (result: string) => {
     return data.flatMap((item) =>
@@ -229,6 +221,10 @@ const ResultsComponent: React.FC = () => {
 
   const totalAmount = totalPrize + totalCommission;
 
+  function setSelectedFromDate(_value: string): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div className="results-container">
       <div className="date-time-picker">
@@ -236,7 +232,7 @@ const ResultsComponent: React.FC = () => {
           Select From Date:
           <input
             type="date"
-            value={selectedFromDate}
+            value={selectedDate}
             onChange={(e) => setSelectedFromDate(e.target.value)}
           />
         </label>
@@ -245,9 +241,9 @@ const ResultsComponent: React.FC = () => {
           Select To Date:
           <input
             type="date"
-            value={selectedToDate}
-            onChange={(e) => setSelectedToDate(e.target.value)}
-            min={selectedFromDate} // Make sure "To" date is not before "From" date
+            value={selectedDate}
+            onChange={(e) => selectedDate(e.target.value)}
+            min={selectedDate} // Make sure "To" date is not before "From" date
           />
         </label>
 
@@ -286,52 +282,79 @@ const ResultsComponent: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {winningResults.flatMap((result, index) => {
-                const abcMatches = getABCMatches(result.result);
-                const abMatches = getABMatches(result.result);
-                const bcMatches = getBCMatches(result.result);
-                const acMatches = getACMatches(result.result);
-                const threeDigitMatches = getThreeDigitMatches(result.result);
+            {winningResults.length > 0 && (
+  <div className="winning-results">
+    <div className="footer">
+      <div>Total Prize: {totalPrize.toFixed(2)}</div>
+      <div>Total Commission: {totalCommission.toFixed(2)}</div>
+      <div>Total Amount: {totalAmount.toFixed(2)}</div>
+    </div>
 
-                const formattedRows: any[] = [];
+    <table className="results-table">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Num</th>
+          <th>Count</th>
+          <th>Letter</th>
+          <th>Prize</th>
+          <th>Commission</th>
+        </tr>
+      </thead>
+      <tbody>
+        {winningResults.flatMap((result, index) => {
+          const abcMatches = getABCMatches(result.result);
+          const abMatches = getABMatches(result.result);
+          const bcMatches = getBCMatches(result.result);
+          const acMatches = getACMatches(result.result);
+          const threeDigitMatches = getThreeDigitMatches(result.result);
 
-                threeDigitMatches.forEach((match) => {
-                  const count = parseInt(match.count, 10);
-                  formattedRows.push({
-                    ticket: result.ticket,
-                    num: result.result,
-                    count: match.count,
-                    letter: match.letter,
-                    prize: getPrize(result.ticket, count, match.letter),
-                    commission: getCommission(result.ticket, count),
-                  });
-                });
+          const formattedRows: any[] = [];
 
-                if (result.ticket === '1') {
-                  [...abcMatches, ...abMatches, ...bcMatches, ...acMatches].forEach((match) => {
-                    const count = parseInt(match.count, 10);
-                    formattedRows.push({
-                      ticket: '1',
-                      num: `${match.letter} ${match.num}`,
-                      letter: match.letter,
-                      count: match.count,
-                      prize: count * (['AB', 'BC', 'AC'].includes(match.letter) ? 700 : 100),
-                      commission: count * (['AB', 'BC', 'AC'].includes(match.letter) ? 30 : 0),
-                    });
-                  });
-                }
+          // Add three-digit matches
+          threeDigitMatches.forEach((match) => {
+            const count = parseInt(match.count, 10);
+            formattedRows.push({
+              ticket: result.ticket,
+              num: result.result,
+              count: match.count,
+              letter: match.letter,
+              prize: getPrize(result.ticket, count, match.letter),
+              commission: getCommission(result.ticket, count),
+            });
+          });
 
-                return formattedRows.map((row, idx) => (
-                  <tr key={`${index}-${idx}`}>
-                    <td>{row.ticket}</td>
-                    <td>{row.num}</td>
-                    <td>{row.count}</td>
-                    <td>{row.letter}</td>
-                    <td>{row.prize.toFixed(2)}</td>
-                    <td>{row.commission.toFixed(2)}</td>
-                  </tr>
-                ));
-              })}
+          // Add ABC matches for ticket 1
+          if (result.ticket === '1') {
+            [...abcMatches, ...abMatches, ...bcMatches, ...acMatches].forEach((match) => {
+              const count = parseInt(match.count, 10);
+              formattedRows.push({
+                ticket: '1',
+                num: `${match.letter} ${match.num}`,
+                letter: match.letter,
+                count: match.count,
+                prize: count * (['AB', 'BC', 'AC'].includes(match.letter) ? 700 : 100),
+                commission: count * (['AB', 'BC', 'AC'].includes(match.letter) ? 30 : 0),
+              });
+            });
+          }
+
+          return formattedRows.map((row, idx) => (
+            <tr key={`${index}-${idx}`}>
+              <td>{row.ticket}</td>
+              <td>{row.num}</td>
+              <td>{row.count}</td>
+              <td>{row.letter}</td>
+              <td>{row.prize.toFixed(2)}</td>
+              <td>{row.commission.toFixed(2)}</td>
+            </tr>
+          ));
+        })}
+      </tbody>
+    </table>
+  </div>
+)}
+
             </tbody>
           </table>
         </div>

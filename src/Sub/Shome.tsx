@@ -50,7 +50,21 @@ const Home: FC = () => {
     setVisibleDigit(digit);
   };
 
-
+  const generateTwoDigitPermutations = (str: string) => {
+    const results: string[] = [];
+  
+    // Permute the 2 digits
+    const permute = (arr: string[]) => {
+      if (arr.length === 2) {
+        // Create permutations by swapping the two digits
+        results.push(arr.join(''));
+      }
+    };
+  
+    permute(str.split('')); // Split the string and generate permutations
+    return [...new Set(results)]; // Remove duplicates (if any)
+  };
+  
   
   const handleNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -120,67 +134,81 @@ const Home: FC = () => {
   };
   
   const handleDigit2ButtonClick = (value: string) => {
-    if (value === 'All') {
-      // Add AB, BC, and AC to the table
-      setTableRows((prevRows) => [
-        ...prevRows,
-        { letter: 'AB', num: numValue2, count: countValue, amount: (parseInt(countValue, 10) * 10).toString() },
-        { letter: 'BC', num: numValue2, count: countValue, amount: (parseInt(countValue, 10) * 10).toString() },
-        { letter: 'AC', num: numValue2, count: countValue, amount: (parseInt(countValue, 10) * 10).toString() },
-      ]);
-    } else {
-      const count = parseInt(countValue, 10) || 0;
-      const amount = count * 10;
+    const count = parseInt(countValue, 10) || 0;
+    const amount = count * 10;
   
+    if (value === 'All') {
+      // Generate permutations for a 2-digit number
+      const permutations = generateTwoDigitPermutations(numValue2);
+  
+      // Add the permutations for "AB", "AC", and "BC"
+      permutations.forEach((perm) => {
+        setTableRows((prevRows) => [
+          ...prevRows,
+          { letter: 'AB', num: perm, count: countValue, amount: amount.toString() },
+          { letter: 'AC', num: perm, count: countValue, amount: amount.toString() },
+          { letter: 'BC', num: perm, count: countValue, amount: amount.toString() },
+        ]);
+      });
+    } else {
+      // Handle individual letter (AB, AC, BC)
       setTableRows((prevRows) => [
         ...prevRows,
         { letter: value, num: numValue2, count: countValue, amount: amount.toString() },
       ]);
     }
   
-    // Clear the inputs after adding to the table
+    // Clear input fields
     setNumValue2('');
     setCountValue('');
   
-    // Focus back on the 'Num' input after the button click
-    if (inputRef2.current) inputRef2.current.focus(); // Set focus on 'numValue2' input
+    // Refocus input field
+    if (inputRef2.current) inputRef2.current.focus();
   };
   
   const handleDigit3ButtonClick = (value: string) => {
     const count = parseInt(countValue, 10) || 0;
     const amount = count * 10;
   
+    // If the value is 'All', we add permutations for both "SUPER" and "BOX"
     if (value === 'All') {
-      setTableRows((prevRows) => [
-        ...prevRows,
-        { letter: 'SUPER', num: numValue3, count: countValue, amount: amount.toString() },
-        { letter: 'BOX', num: numValue3, count: countValue, amount: amount.toString() },
-      ]);
+      // Generate all permutations of numValue3
+      const permutations = generatePermutations(numValue3);
   
-      // If "Set" is checked, generate all permutations
-      if (setChecked) {
-        const permutations = generatePermutations(numValue3);
-        permutations.forEach((perm) => {
-          setTableRows((prevRows) => [
-            ...prevRows,
-            { letter: 'set', num: perm, count: countValue, amount: amount.toString() },
-          ]);
-        });
-      }
+      // Add the permutations for "SUPER" letter
+      permutations.forEach((perm) => {
+        setTableRows((prevRows) => [
+          ...prevRows,
+          { letter: 'SUPER', num: perm, count: countValue, amount: amount.toString() },
+        ]);
+      });
+  
+      // Add the permutations for "BOX" letter
+      permutations.forEach((perm) => {
+        setTableRows((prevRows) => [
+          ...prevRows,
+          { letter: 'BOX', num: perm, count: countValue, amount: amount.toString() },
+        ]);
+      });
+  
+    
+      
     } else {
-      setTableRows((prevRows) => [
-        ...prevRows,
-        { letter: value, num: numValue3, count: countValue, amount: amount.toString() },
-      ]);
+      // For individual letter, add the entered number as is
+   
   
       // Handle permutations if "Set" is checked
       if (setChecked) {
         const permutations = generatePermutations(numValue3);
+  
         permutations.forEach((perm) => {
-          setTableRows((prevRows) => [
-            ...prevRows,
-            { letter: value, num: perm, count: countValue, amount: amount.toString() },
-          ]);
+          // Only add the permutation if it's not the original number
+          if (perm !== numValue3) {
+            setTableRows((prevRows) => [
+              ...prevRows,
+              { letter: value, num: perm, count: countValue, amount: amount.toString() },
+            ]);
+          }
         });
       }
     }
@@ -192,6 +220,7 @@ const Home: FC = () => {
     // Refocus input field
     if (inputRef3.current) inputRef3.current.focus();
   };
+  
   
   
   
@@ -341,7 +370,6 @@ const Home: FC = () => {
   
   
   
-  
   const handleSetCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSetChecked(e.target.checked);
   
@@ -358,17 +386,17 @@ const Home: FC = () => {
         const permutations = generatePermutations(numToPermute);
         console.log('Generated Permutations:', permutations);
   
-        const existingNumbers = new Set(tableRows.map(row => row.num)); // Track existing numbers in the table
+        // Remove the original number (e.g., 123) from the table compulsorily
+        const newTableRows = tableRows.filter(row => row.num !== numToPermute);
+        setTableRows(newTableRows); // Remove the original number (e.g., 123) from the table
   
-        // Add permutations to the table rows
+        // Add the permutations to the table
         permutations.forEach((perm) => {
           // Only add the permutation if it is not already in the table
-          if (!existingNumbers.has(perm)) {
+          if (!newTableRows.some(row => row.num === perm)) {
             setTableRows((prevRows) => [
               ...prevRows,
-              { letter: 'SET', num: perm, count: countValue, amount: '0' }, // You can calculate the amount based on your logic
             ]);
-            existingNumbers.add(perm); // Mark this permutation as added
           }
         });
       }
@@ -407,80 +435,156 @@ const Home: FC = () => {
       </div>
 
       {visibleDigit === 'digit1' && (
-        <div className="digit1">
-          <div className="input1">
-            <input className='inputs'
-              type="number"
-              placeholder="Num"
-              value={numValue}
-              onChange={handleNumChange}
-              ref={inputRef1}
-            />
-            <input className='inputs'
-              type="number"
-              placeholder="Count"
-              value={countValue}
-              onChange={(e) => setCountValue(e.target.value)} // Update count value
-              ref={inputRef4}
-            />
-            <div className='chckbx'>
-            <label> Set
-  <input type="checkbox" /> 
-</label>
-<label>
-any <input type="checkbox" /> 
-</label>
-              
-            </div>
-          </div>
+  <div className="digit1">
+    <div className="input1">
+      <input
+        className='inputs'
+        type="number"
+        placeholder="Num"
+        value={numValue}
+        onChange={handleNumChange}
+        ref={inputRef1}
+      />
+      <input
+        className='inputs'
+        type="number"
+        placeholder="Count"
+        value={countValue}
+        onChange={(e) => setCountValue(e.target.value)} // Update count value
+        ref={inputRef4}
+      />
+      <div className='chckbx'>
+        <label>
+          Set
+          <input type="checkbox" />
+        </label>
+        <label>
+          Any
+          <input type="checkbox" />
+        </label>
+      </div>
+    </div>
 
-          <div className="type">
-            <button type="button" className="btn btn-dark gray" onClick={() => handleDigit1ButtonClick('A')}>A</button>
-            <button type="button" className="btn btn-dark gray" onClick={() => handleDigit1ButtonClick('B')}>B</button>
-            <button type="button" className="btn btn-dark gray" onClick={() => handleDigit1ButtonClick('C')}>C</button>
-            <button type="button" className="btn btn-dark gray" onClick={() => handleDigit1ButtonClick('All')}>All</button>
-            </div>
-         
-        </div>
-      )}
+    <div className="type">
+      <button 
+        type="button" 
+        className="btn btn-dark gray" 
+        onClick={() => {
+          // Only add to table if numValue is filled and countValue is at least 1
+          if (numValue.length > 0 && parseInt(countValue) >= 1) {
+            handleDigit1ButtonClick('A');
+          }
+        }}
+      >
+        A
+      </button>
+      <button 
+        type="button" 
+        className="btn btn-dark gray" 
+        onClick={() => {
+          // Only add to table if numValue is filled and countValue is at least 1
+          if (numValue.length > 0 && parseInt(countValue) >= 1) {
+            handleDigit1ButtonClick('B');
+          }
+        }}
+      >
+        B
+      </button>
+      <button 
+        type="button" 
+        className="btn btn-dark gray" 
+        onClick={() => {
+          // Only add to table if numValue is filled and countValue is at least 1
+          if (numValue.length > 0 && parseInt(countValue) >= 1) {
+            handleDigit1ButtonClick('C');
+          }
+        }}
+      >
+        C
+      </button>
+      <button 
+        type="button" 
+        className="btn btn-dark gray" 
+        onClick={() => {
+          // Only add to table if numValue is filled and countValue is at least 1
+          if (numValue.length > 0 && parseInt(countValue) >= 1) {
+            handleDigit1ButtonClick('All');
+          }
+        }}
+      >
+        All
+      </button>
+    </div>
 
-      {visibleDigit === 'digit2' && (
-        <div className="digit2">
-          <div className="input2">
-            <input className='inputs'
-              type="number"
-              placeholder="Num"
-              value={numValue2}
-              onChange={handleNumChange2}
-              ref={inputRef2}
-            />
-            <input className='inputs'
-              type="number"
-              placeholder="Count"
-              value={countValue}
-              onChange={(e) => setCountValue(e.target.value)} // Update count value for digit2
-              ref={inputRef4}
-            />
-            <div className='chckbx'>
-            <label> Set
-  <input type="checkbox" /> 
-</label>
-<label>
-any <input type="checkbox" /> 
-</label>
+  </div>
+)}
 
-            </div>
-          </div>
+{visibleDigit === 'digit2' && (
+  <div className="digit2">
+    <div className="input2">
+      <input className="inputs"
+        type="number"
+        placeholder="Num"
+        value={numValue2}
+        onChange={handleNumChange2}
+        ref={inputRef2}
+      />
+      <input className="inputs"
+        type="number"
+        placeholder="Count"
+        value={countValue}
+        onChange={(e) => setCountValue(e.target.value)} // Update count value for digit2
+        ref={inputRef4}
+      />
+      <div className="chckbx">
+        <label> Set
+          <input type="checkbox" /> 
+        </label>
+        <label>
+          any 
+          <input type="checkbox" /> 
+        </label>
+      </div>
+    </div>
 
-          <div className="type">
-            <button type="button" className="btn btn-info" onClick={() => handleDigit2ButtonClick('AB')}>AB</button>
-            <button type="button" className="btn btn-info" onClick={() => handleDigit2ButtonClick('BC')}>BC</button>
-            <button type="button" className="btn btn-info" onClick={() => handleDigit2ButtonClick('AC')}>AC</button>
-            <button type="button" className="btn btn-dark gray" onClick={() => handleDigit2ButtonClick('All')}>All</button>
-            </div>
-         
-        </div>
-      )}
+    <div className="type">
+      {/* Modify button logic to ensure numValue2 and countValue are not empty */}
+      <button 
+        type="button" 
+        className="btn btn-info" 
+        onClick={() => numValue2.length > 0 && countValue.length > 0 && handleDigit2ButtonClick('AB')}
+      >
+        AB
+      </button>
+
+
+      <button 
+        type="button" 
+        className="btn btn-info" 
+        onClick={() => numValue2.length > 0 && countValue.length > 0 && handleDigit2ButtonClick('AC')}
+      >
+        AC
+      </button>
+
+      <button 
+        type="button" 
+        className="btn btn-info" 
+        onClick={() => numValue2.length > 0 && countValue.length > 0 && handleDigit2ButtonClick('BC')}
+      >
+        BC
+      </button>
+      
+      <button 
+        type="button" 
+        className="btn btn-dark gray" 
+        onClick={() => numValue2.length > 0 && countValue.length > 0 && handleDigit2ButtonClick('All')}
+      >
+        All
+      </button>
+    </div>
+  </div>
+)}
+
 {visibleDigit === 'digit3' && (
   <div className="digit3">
     <div className="input3">
@@ -507,7 +611,7 @@ any <input type="checkbox" />
           <input type="checkbox" onChange={handleSetCheckboxChange} />
         </label>
         <label>
-          any
+          Any
           <input type="checkbox" />
         </label>
       </div>
@@ -516,21 +620,45 @@ any <input type="checkbox" />
       <button 
         type="button" 
         className="btn btn-success" 
-        onClick={() => handleDigit3ButtonClick('SUPER')}
+        onClick={() => {
+          // Only add to table if one input is filled and the second input is at least 1
+          if (
+            (numValue3.length > 0 && parseInt(countValue) >= 1) || 
+            (countValue.length > 0 && parseInt(numValue3) >= 1)
+          ) {
+            handleDigit3ButtonClick('SUPER');
+          }
+        }}
       >
         SUPER
       </button>
       <button 
         type="button" 
         className="btn btn-success" 
-        onClick={() => handleDigit3ButtonClick('BOX')}
+        onClick={() => {
+          // Only add to table if one input is filled and the second input is at least 1
+          if (
+            (numValue3.length > 0 && parseInt(countValue) >= 1) || 
+            (countValue.length > 0 && parseInt(numValue3) >= 1)
+          ) {
+            handleDigit3ButtonClick('BOX');
+          }
+        }}
       >
         BOX
       </button>
       <button 
         type="button" 
         className="btn btn-dark gray" 
-        onClick={() => handleDigit3ButtonClick('All')}
+        onClick={() => {
+          // Only add to table if one input is filled and the second input is at least 1
+          if (
+            (numValue3.length > 0 && parseInt(countValue) >= 1) || 
+            (countValue.length > 0 && parseInt(numValue3) >= 1)
+          ) {
+            handleDigit3ButtonClick('All');
+          }
+        }}
       >
         All
       </button>
