@@ -51,10 +51,7 @@ const router = createBrowserRouter([
     path: "/result",
     element: <Result />, // Result Route
   },
-  {
-    path: "/sdate",
-    element: <Sdate />, // Result Route
-  },
+ 
   {
     path: "/sales",
     element: <Salesreport />, // Sales Report Route
