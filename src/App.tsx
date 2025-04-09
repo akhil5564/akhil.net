@@ -24,7 +24,6 @@ import TotalAmountDisplay from './Main/TotalAmountDisplay';
 import SelectDateAndTime from './Main/SelectDateAndTime';
 import DateTimeFilter from './Sub/DateTimeFilter';
 import ResultsPage from './Main/Result';
-import Sdate from './Sub/Sdate';
 
 // Create the router with createBrowserRouter
 const router = createBrowserRouter([

@@ -241,7 +241,7 @@ const ResultsComponent: React.FC = () => {
           <input
             type="date"
             value={selectedDate}
-            onChange={(e) => selectedDate(e.target.value)}
+            onChange={(e: { target: { value: any; }; }) => selectedDate(e.target.value)}
             min={selectedDate} // Make sure "To" date is not before "From" date
           />
         </label>
