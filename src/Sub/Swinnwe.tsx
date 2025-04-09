@@ -14,12 +14,12 @@ interface TableRow {
   letter: string;
   num: string;
   count: string;
-  amount: string;
+  amount: number;
 }
 
 interface Data {
   customId: number;
-  selectedTime: string;
+  selectedTime: any;
   tableRows: TableRow[];
   username: string;
 }
@@ -32,7 +32,6 @@ const ResultsComponent: React.FC = () => {
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const selectedDate = queryParams.get('date') || '';  // Get date from query params
-  const selectedTime = queryParams.get('time') || '';  // Get time from query params
   
   const [selectedTime, setSelectedTime] = useState<string>('');  // Default is empty
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
