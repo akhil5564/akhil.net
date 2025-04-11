@@ -170,7 +170,6 @@ const Home: FC = () => {
     const count = parseInt(countValue, 10) || 0;
     const amount = count * 10;
   
-    // If the value is 'All', we add permutations for both "SUPER" and "BOX"
     if (value === 'All') {
       // Generate all permutations of numValue3
       const permutations = generatePermutations(numValue3);
@@ -190,26 +189,23 @@ const Home: FC = () => {
           { letter: 'BOX', num: perm, count: countValue, amount: amount.toString() },
         ]);
       });
-  
-    
-      
     } else {
-      // For individual letter, add the entered number as is
-   
-  
-      // Handle permutations if "Set" is checked
       if (setChecked) {
         const permutations = generatePermutations(numValue3);
+        const uniquePerms = Array.from(new Set([numValue3, ...permutations])); // includes original and avoids duplicates
   
-        permutations.forEach((perm) => {
-          // Only add the permutation if it's not the original number
-          if (perm !== numValue3) {
-            setTableRows((prevRows) => [
-              ...prevRows,
-              { letter: value, num: perm, count: countValue, amount: amount.toString() },
-            ]);
-          }
+        uniquePerms.forEach((perm) => {
+          setTableRows((prevRows) => [
+            ...prevRows,
+            { letter: value, num: perm, count: countValue, amount: amount.toString() },
+          ]);
         });
+      } else {
+        // Just add the original number
+        setTableRows((prevRows) => [
+          ...prevRows,
+          { letter: value, num: numValue3, count: countValue, amount: amount.toString() },
+        ]);
       }
     }
   

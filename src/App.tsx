@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { useState } from 'react';
 import Home from './Main/Home';
 import Login from './login/Login';
 import Salesreport from './Main/Salesreport';
@@ -21,129 +22,158 @@ import Sreporter from './Sub/Sreporter';
 import Ssales from './Sub/Ssales';
 import Swinnwe from './Sub/Swinnwe';
 import TotalAmountDisplay from './Main/TotalAmountDisplay';
-import SelectDateAndTime from './Main/SelectDateAndTime';
 import DateTimeFilter from './Sub/DateTimeFilter';
 import ResultsPage from './Main/Result';
+import Spnl from './Sub/Spnl';
+import SelectDateAndTime from './Main/SelectDateAndTime';
 
 // Create the router with createBrowserRouter
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />, // Login Page Route
-  },
-  {
-    path: "/counts",
-    element: <InCount />, // Count Route
-  },
-  {
-    path: "/home",
-    element: <Home />, // Home Page Route
-  },
-  {
-    path: "/shome",
-    element: <Shome />, // Sub Home Page Route
-  },
-  {
-    path: "/snavbar",
-    element: <Snavbar handlePaste={function (): void { throw new Error('Function not implemented.'); }} />, // Sub Navbar Route
-  },
-  {
-    path: "/result",
-    element: <Result />, // Result Route
-  },
- 
-  {
-    path: "/sales",
-    element: <Salesreport />, // Sales Report Route
-  },
-  {
-    path: "/winning",
-    element: <Winning onSubmit={function (_fromDate: string, _toDate: string, _time: string): void {
-      throw new Error('Function not implemented.');
-    } } />, // Winning Report Route
-  },
-  {
-    path: "/winner",
-    element: <Winner />, // Winner Route
-  },
-  {
-    path: "/more",
-    element: <More />, // More Route
-  },
-  {
-    path: "/swinner",
-    element: <Swinnwe />, // Sub Winner Route
-  },
-  {
-    path: "/sreporter",
-    element: <Sreporter />, // Sub Reporter Route
-  },
-  {
-    path: "/ssales",
-    element: <Ssales />, // Sub Sales Route
-  },
-  {
-    path: "/tm",
-    element: <TotalAmountDisplay />, // Total Amount Display Route
-  },
-  {
-    path: "/results",
-    element: <Result />, // Result Page for selected date and time
-  },
-  {
-    path: "/reporter",
-    element: <Reporter />, // Reporter Route
-  },
-  {
-    path: "/netpay",
-    element: <Netpay />, // Net Pay Route
-  },
-  {
-    path: "/prof",
-    element: <ResultsPage />, // Net Pay Route
-  },
-  {
-    path: "/date",
-    element: <Date />, // Net Pay Route
-  },
-  {
-    path: "/pnl",
-    element: <Pnl />, // PnL Route
-  },
-  {
-    path: "/countreport",
-    element: <Countreport />, // Count Report Route
-  },
-  {
-    path: "/newuser",
-    element: <InUserManager />, // User Manager Route
-  },
-  {
-    path: "/commission",
-    element: <Usercommission />, // User Commission Route
-  },
-  {
-    path: "/createuser",
-    element: <CreateUser />, // Create User Route
-  },
-  {
-    path: "/resulentry",
-    element: <ResultEntry />, // Result Entry Route
-  },
-  {
-    path: "/datefilter",
-    element: <DateTimeFilter />, // DateTimeFilter component now in Sub folder
-  },
-  {
-    path: "/select-date-time", // Page for selecting date and time
-    element: <SelectDateAndTime />, // Select Date and Time Page
-  },
-]);
-
 const App: React.FC = () => {
-  return (
-    <RouterProvider router={router} /> // Using the router constant here
-  );
+  const [fromDate, setFromDate] = useState<string>('');
+  const [toDate, setToDate] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('');
+
+  const handleFromDateChange = (value: string) => setFromDate(value);
+  const handleToDateChange = (value: string) => setToDate(value);
+  const handleTimeChange = (value: string) => setSelectedTime(value);
+
+  const handleSubmit = () => {
+    console.log('From Date:', fromDate);
+    console.log('To Date:', toDate);
+    console.log('Selected Time:', selectedTime);
+  };
+
+  // Create the router with the state passed to the routes
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Login />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "/select-date-time",
+      element: <SelectDateAndTime />,
+    },
+    {
+      path: "/winning",
+      element: <Winning onSubmit={handleSubmit} />,
+    },
+    {
+      path: "/swinner",
+      element: (
+        <Swinnwe
+
+
+
+        />
+      ),
+    },
+    {
+      path: "/datefilter",
+      element: (
+        <DateTimeFilter
+          fromDate={fromDate}
+          toDate={toDate}
+          selectedTime={selectedTime}
+          onFromDateChange={handleFromDateChange}
+          onToDateChange={handleToDateChange}
+          onTimeChange={handleTimeChange}
+          onSubmit={handleSubmit}
+        />
+      ),
+    },
+    {
+      path: "/counts",
+      element: <InCount />, // Count Route
+    },
+    {
+      path: "/shome",
+      element: <Shome />, // Sub Home Page Route
+    },
+    {
+      path: "/snavbar",
+      element: <Snavbar handlePaste={function (): void {
+        throw new Error('Function not implemented.');
+      } } />, // Sub Navbar Route
+    },
+    {
+      path: "/result",
+      element: <Result />, // Result Route
+    },
+    {
+      path: "/sales",
+      element: <Salesreport />, // Sales Report Route
+    },
+    {
+      path: "/winner",
+      element: <Winner />, // Winner Route
+    },
+    {
+      path: "/more",
+      element: <More />, // More Route
+    },
+    {
+      path: "/swinner",
+      element: <Swinnwe />, // Sub Winner Route
+    },
+    {
+      path: "/sreporter",
+      element: <Sreporter />, // Sub Reporter Route
+    },
+    {
+      path: "/ssales",
+      element: <Ssales />, // Sub Sales Route
+    },
+    {
+      path: "/tm",
+      element: <TotalAmountDisplay />, // Total Amount Display Route
+    },
+    {
+      path: "/results",
+      element: <ResultsPage />, // Result Page for selected date and time
+    },
+    {
+      path: "/reporter",
+      element: <Reporter />, // Reporter Route
+    },
+    {
+      path: "/netpay",
+      element: <Netpay />, // Net Pay Route
+    },
+    {
+      path: "/pnl",
+      element: <Pnl />, // PnL Route
+    },
+    {
+      path: "/countreport",
+      element: <Countreport />, // Count Report Route
+    },
+    {
+      path: "/newuser",
+      element: <InUserManager />, // User Manager Route
+    },
+    {
+      path: "/commission",
+      element: <Usercommission />, // User Commission Route
+    },
+    {
+      path: "/createuser",
+      element: <CreateUser />, // Create User Route
+    },
+    {
+      path: "/resulentry",
+      element: <ResultEntry />, // Result Entry Route
+    },
+    {
+      path: "/spnl",
+      element: <Spnl />, // Net Pay Route
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 };
 
 export default App;

@@ -1,120 +1,83 @@
-import { FC, useState, useEffect } from 'react';
-import { IconZoomCode } from '@tabler/icons-react';
-import '../Main/Salesreport.css';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import './DateTimeFilter.css'; // Assuming your styles are in this file
 
-interface SalesReportProps {
-  // You can add more props if needed for further customization
+interface DateTimeFilterProps {
+  fromDate: string;
+  toDate: string;
+  selectedTime: string;
+  onFromDateChange: (value: string) => void;
+  onToDateChange: (value: string) => void;
+  onTimeChange: (value: string) => void;
+  onSubmit: () => void;
 }
 
-const SalesReport: FC<SalesReportProps> = ({}) => {
-  const [number, setNumber] = useState<number | string>(''); // State for the number input
-  const [selectedTime, setSelectedTime] = useState<string>(''); // State for time selection
-  const [fromDate, setFromDate] = useState<string>(''); // State for from date
-  const [toDate, setToDate] = useState<string>(''); // State for to date
-  const [selectedUser, setSelectedUser] = useState<string>(''); // State for user selection
+const DateTimeFilter: React.FC<DateTimeFilterProps> = ({
+  fromDate,
+  toDate,
+  selectedTime,
+  onFromDateChange,
+  onToDateChange,
+  onTimeChange,
+  onSubmit
+}) => {
+  const navigate = useNavigate(); // Hook for navigation
 
-  const navigate = useNavigate();
-
-  // Set today's date in YYYY-MM-DD format as the default value for the date input
-  useEffect(() => {
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    setFromDate(formattedDate); // Set the formatted date as the default value for from date
-    setToDate(formattedDate); // Set the formatted date as the default value for to date
-  }, []);
-
-  // Handlers for input changes
-  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTime(e.target.value);
-  };
-
-  const handleFromDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFromDate(e.target.value);
-  };
-
-  const handleToDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setToDate(e.target.value);
-  };
-
-  const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedUser(e.target.value);
-  };
-
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNumber(e.target.value);
-  };
-
-  // Handle form submission and validation
   const handleSubmit = () => {
-    if (!selectedTime || !fromDate || !toDate) {
-      alert('Please fill in all required fields.');
-      return;
-    }
+    // Trigger the parent component's submit function
+    onSubmit();
 
-    // Redirect to the results page with query parameters
-    navigate(`/swinner?time=${selectedTime}&fromDate=${fromDate}&toDate=${toDate}&user=${selectedUser}&number=${number}`);
+    // Redirect to the "swinner" page after submitting
+    navigate('/swinner'); // Adjust the URL based on your routing
   };
 
   return (
-    <div className="sales-report-container">
-      <div className="form-group">
-        <label className="form-label">Select Time</label>
-        <select className="form-input" value={selectedTime} onChange={handleTimeChange}>
-          <option value="">Select a time</option>
-          <option value="1PM">1PM</option>
-          <option value="3PM">3PM</option>
-          <option value="6PM">6PM</option>
-          <option value="8PM">8PM</option>
-          <option value="All">All</option>
-        </select>
+    <div className="filter-container">
+      <h2 className="filter-title">Filter Results</h2>
+      <div className="filter-fields">
+        <label className="filter-label">
+          From:
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => onFromDateChange(e.target.value)}
+            className="filter-input"
+          />
+        </label>
+
+        <label className="filter-label">
+          To:
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => onToDateChange(e.target.value)}
+            className="filter-input"
+            min={fromDate}
+          />
+        </label>
+
+        <label className="filter-label">
+          Time:
+          <select
+            value={selectedTime}
+            onChange={(e) => onTimeChange(e.target.value)}
+            className="filter-input"
+          >
+            <option value="">Select Time</option>
+            <option value="all">All Times</option>
+            <option value="1pm">1 PM</option>
+            <option value="3pm">3 PM</option>
+            <option value="6pm">6 PM</option>
+            <option value="8pm">8 PM</option>
+          </select>
+        </label>
       </div>
 
-      <div className="form-group">
-        <label className="form-label">From:</label>
-        <input
-          className="form-input"
-          type="date"
-          value={fromDate}
-          onChange={handleFromDateChange}
-        />
-
-        <label className="form-label">To:</label>
-        <input
-          className="form-input"
-          type="date"
-          value={toDate}
-          onChange={handleToDateChange}
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Select User</label>
-        <select className="form-input" value={selectedUser} onChange={handleUserChange}>
-          <option value="">All</option>
-          {/* Add other user options here */}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label className="form-label">Number</label>
-        <input
-          className="form-input"
-          type="number"
-          value={number}
-          onChange={handleNumberChange}
-          placeholder="Enter a number"
-          min="1"  // Add minimum value for number input
-        />
-      </div>
-
-      {/* Submit button to go to Reporter page */}
-      <button className="submit-button" onClick={handleSubmit}>
-        <IconZoomCode stroke={2} />
-        
+      <button className="filter-submit" onClick={handleSubmit}>
+        Submit
       </button>
     </div>
   );
 };
 
-export default SalesReport;
+export default DateTimeFilter;
