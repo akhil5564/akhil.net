@@ -1,7 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import './DateTimeFilter.css';
 
-
+// ✅ Explicit interface with proper types
+interface DateTimeFilterProps {
+  fromDate: string;
+  toDate: string;
+  selectedTime: string;
+  onFromDateChange: (value: string) => void;
+  onToDateChange: (value: string) => void;
+  onTimeChange: (value: string) => void;
+  onSubmit: () => void;
+}
 
 const DateTimeFilter: React.FC<DateTimeFilterProps> = ({
   fromDate,
