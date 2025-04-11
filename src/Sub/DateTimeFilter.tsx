@@ -1,10 +1,12 @@
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import './DateTimeFilter.css'; // Assuming your styles are in this file
+import React from 'react'; // ✅ Make sure this is correct
+import { useNavigate } from 'react-router-dom';
+import './DateTimeFilter.css';
 
+// ✅ Explicit interface with proper types
 interface DateTimeFilterProps {
-  fromDate: string;
-  toDate: string;
-  selectedTime: string;
+  fromDate: any;
+  toDate: any;
+  selectedTime: any;
   onFromDateChange: (value: string) => void;
   onToDateChange: (value: string) => void;
   onTimeChange: (value: string) => void;
@@ -18,16 +20,13 @@ const DateTimeFilter: React.FC<DateTimeFilterProps> = ({
   onFromDateChange,
   onToDateChange,
   onTimeChange,
-  onSubmit
+  onSubmit,
 }) => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
-    // Trigger the parent component's submit function
     onSubmit();
-
-    // Redirect to the "swinner" page after submitting
-    navigate('/swinner'); // Adjust the URL based on your routing
+    navigate('/swinner');
   };
 
   return (
