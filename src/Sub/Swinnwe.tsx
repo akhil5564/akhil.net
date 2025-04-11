@@ -29,10 +29,10 @@ const ResultsComponent: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  useLocation();
-  const [selectedDate, setSelectedDate] = useState<string>(''); // Initialize selectedDate with empty string or default value
-
-
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const selectedDate = queryParams.get('date') || '';  // Get date from query params
+  
   const [selectedTime, setSelectedTime] = useState<string>('');  // Default is empty
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
 
@@ -239,12 +239,11 @@ const ResultsComponent: React.FC = () => {
         <label>
           Select To Date:
           <input
-  type="date"
-  value={selectedDate}
-  onChange={(e: { target: { value: string; }; }) => setSelectedDate(e.target.value)} // Corrected here
-  min={selectedDate} // Make sure "To" date is not before "From" date
-/>
-
+            type="date"
+            value={selectedDate}
+            onChange={(e: { target: { value: any; }; }) => selectedDate(e.target.value)}
+            min={selectedDate} // Make sure "To" date is not before "From" date
+          />
         </label>
 
         <label>

@@ -1,0 +1,57 @@
+/* SalesReport.css */
+
+/* Container Styling */
+.sales-report-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title Styling */
+  .title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f80909;
+    background-color: black;
+  }
+  
+  /* Form Group Styling */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Label Styling */
+  .form-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  /* Input Styling */
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Submit Button Styling */
+  .submit-button {
+    background-color:red;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 45%;
+  }
+  
