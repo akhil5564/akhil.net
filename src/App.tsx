@@ -24,7 +24,6 @@ import Swinnwe from './Sub/Swinnwe';
 import TotalAmountDisplay from './Main/TotalAmountDisplay';
 import DateTimeFilter from './Sub/DateTimeFilter';
 import ResultsPage from './Main/Result';
-import Spnl from './Sub/Spnl';
 import SelectDateAndTime from './Main/SelectDateAndTime';
 
 // Create the router with createBrowserRouter
@@ -167,10 +166,7 @@ const App: React.FC = () => {
       path: "/resulentry",
       element: <ResultEntry />, // Result Entry Route
     },
-    {
-      path: "/spnl",
-      element: <Spnl />, // Net Pay Route
-    },
+
   ]);
 
   return <RouterProvider router={router} />;

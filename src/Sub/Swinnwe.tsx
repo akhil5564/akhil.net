@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../Main/result.css';
+import './swin.css';
 
 interface Result {
   ticket: string;
@@ -67,24 +67,16 @@ const ResultsComponent: React.FC = () => {
   }, [loggedInUser]);
 
   const getABMatches = (result: string) =>
-    data.flatMap(item =>
-      item.tableRows.filter(row => row.letter === 'AB' && row.num === result.slice(0, 2))
-    );
+    data.flatMap(item => item.tableRows.filter(row => row.letter === 'AB' && row.num === result.slice(0, 2)));
 
   const getBCMatches = (result: string) =>
-    data.flatMap(item =>
-      item.tableRows.filter(row => row.letter === 'BC' && row.num === result.slice(1, 3))
-    );
+    data.flatMap(item => item.tableRows.filter(row => row.letter === 'BC' && row.num === result.slice(1, 3)));
 
   const getACMatches = (result: string) =>
-    data.flatMap(item =>
-      item.tableRows.filter(row => row.letter === 'AC' && row.num === result[0] + result[2])
-    );
+    data.flatMap(item => item.tableRows.filter(row => row.letter === 'AC' && row.num === result[0] + result[2]));
 
   const getThreeDigitMatches = (result: string) =>
-    data.flatMap(item =>
-      item.tableRows.filter(row => row.num === result)
-    );
+    data.flatMap(item => item.tableRows.filter(row => row.num === result));
 
   const getABCMatches = (result: string) =>
     data.flatMap(item =>
@@ -128,9 +120,7 @@ const ResultsComponent: React.FC = () => {
       getThreeDigitMatches(result.result).length > 0 ||
       getABCMatches(result.result).length > 0 ||
       data.some(item =>
-        item.tableRows.some(row =>
-          row.letter === 'BOX' && areDigitsEqual(row.num, result.result)
-        )
+        item.tableRows.some(row => row.letter === 'BOX' && areDigitsEqual(row.num, result.result))
       )
   );
 
@@ -138,9 +128,7 @@ const ResultsComponent: React.FC = () => {
     const threeDigitMatches = getThreeDigitMatches(result.result);
     const abcMatches = getABCMatches(result.result);
     const boxMatches = data.flatMap(item =>
-      item.tableRows.filter(row =>
-        row.letter === 'BOX' && areDigitsEqual(row.num, result.result)
-      )
+      item.tableRows.filter(row => row.letter === 'BOX' && areDigitsEqual(row.num, result.result))
     );
 
     let prize = 0;
@@ -188,12 +176,23 @@ const ResultsComponent: React.FC = () => {
 
   const totalAmount = totalPrize + totalCommission;
 
+  // 🟩 Now it's safe to calculate this here:
+  const totalInputAmount = data.reduce((sum, item) => {
+    return sum + item.tableRows.reduce((acc, row) => acc + (row.amount || 0), 0);
+  }, 0);
+
+  const profitOrLoss = totalInputAmount - totalAmount;
+
   return (
     <div className="results-container">
       <div className="footer">
-        <div>Total Prize: {totalPrize.toFixed(2)}</div>
-        <div>Total Commission: {totalCommission.toFixed(2)}</div>
-        <div>Total Amount: {totalAmount.toFixed(2)}</div>
+        <div>Total Input: ₹{totalInputAmount.toFixed(2)}</div>
+        <div>Total Prize: ₹{totalPrize.toFixed(2)}</div>
+        <div>Total Commission: ₹{totalCommission.toFixed(2)}</div>
+        <div>Total Winning (Prize + Commission): ₹{totalAmount.toFixed(2)}</div>
+        <div style={{ color: profitOrLoss >= 0 ? 'green' : 'red' }}>
+          Profit / Loss: ₹{profitOrLoss.toFixed(2)}
+        </div>
       </div>
 
       <table className="results-table">
@@ -222,7 +221,7 @@ const ResultsComponent: React.FC = () => {
 
             const formattedRows: any[] = [];
 
-            threeDigitMatches.forEach((match) => {
+            threeDigitMatches.forEach(match => {
               const count = parseInt(match.count, 10);
               formattedRows.push({
                 ticket: result.ticket,
@@ -235,7 +234,7 @@ const ResultsComponent: React.FC = () => {
             });
 
             if (result.ticket === '1') {
-              [...abcMatches, ...abMatches, ...bcMatches, ...acMatches].forEach((match) => {
+              [...abcMatches, ...abMatches, ...bcMatches, ...acMatches].forEach(match => {
                 const count = parseInt(match.count, 10);
                 formattedRows.push({
                   ticket: '1',
@@ -248,7 +247,7 @@ const ResultsComponent: React.FC = () => {
               });
             }
 
-            boxMatches.forEach((match) => {
+            boxMatches.forEach(match => {
               const count = parseInt(match.count, 10);
               formattedRows.push({
                 ticket: result.ticket,
