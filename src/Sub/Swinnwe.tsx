@@ -185,15 +185,6 @@ const ResultsComponent: React.FC = () => {
 
   return (
     <div className="results-container">
-      <div className="footer">
-        <div>Total Input: ₹{totalInputAmount.toFixed(2)}</div>
-        <div>Total Prize: ₹{totalPrize.toFixed(2)}</div>
-        <div>Total Commission: ₹{totalCommission.toFixed(2)}</div>
-        <div>Total Winning (Prize + Commission): ₹{totalAmount.toFixed(2)}</div>
-        <div style={{ color: profitOrLoss >= 0 ? 'green' : 'red' }}>
-          Profit / Loss: ₹{profitOrLoss.toFixed(2)}
-        </div>
-      </div>
 
       <table className="results-table">
         <thead>
@@ -251,7 +242,7 @@ const ResultsComponent: React.FC = () => {
               const count = parseInt(match.count, 10);
               formattedRows.push({
                 ticket: result.ticket,
-                num: `BOX ${match.num}`,
+                num: ` ${match.num}`,
                 letter: 'BOX',
                 count: match.count,
                 prize: 800 * count,
@@ -272,7 +263,24 @@ const ResultsComponent: React.FC = () => {
           })}
         </tbody>
       </table>
+
+      <div className="footer">
+  <div className="footer-left">
+    <div>Sale: ₹{totalInputAmount.toFixed(2)}</div>
+    <div>Prize: ₹{totalPrize.toFixed(2)}</div>
+    <div>Commission: ₹{totalCommission.toFixed(2)}</div>
+  </div>
+  <div className="footer-right">
+    <div>Winning: ₹{totalAmount.toFixed(2)}</div>
+    <div style={{ color: profitOrLoss >= 0 ? 'green' : 'red' }}>
+      Profit / Loss: ₹{profitOrLoss.toFixed(2)}
     </div>
+  </div>
+</div>
+
+    </div>
+
+    
   );
 };
 
