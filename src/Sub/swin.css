@@ -1,181 +1,180 @@
 /* Global Styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    font-family: 'Roboto', sans-serif;
-    background: #f4f4f9;
-    color: #333;
-    padding: 0;
-  }
-  
-  /* Main Container */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background: #f4f4f9;
+  color: #333;
+}
+
+/* Main Container */
+.results-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  flex: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.results-container:hover {
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Section */
+.footer {
+  background-color: #030303;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: auto;
+  font-size: 0.75rem;
+  color: white;
+  display: flex;
+  justify-content: space-between; /* Align left and right */
+  align-items: center;
+  height: 50px; /* Maximum height */
+  padding: 0 1rem; /* Reduced padding for compact layout */
+  gap: 3rem; /* Add more gap between the left and right sections */
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;  /* Align content in a row */
+  gap: 2rem;  /* Increased space between the items inside each section */
+}
+
+.footer-left div,
+.footer-right div {
+  font-weight: bold;
+}
+
+.footer-left div:last-child,
+.footer-right div:last-child {
+  color: rgb(250, 252, 250);
+}
+
+/* Table styling */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.results-table thead {
+  background: #90939561;
+  color: #fff;
+}
+
+.results-table th,
+.results-table td {
+  padding: 6px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.results-table th {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.results-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.results-table tbody tr:hover {
+  background-color: #eef1f6;
+  cursor: pointer;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
   .results-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    flex: 1;  /* This allows the main content to take up all available space */
-    transition: all 0.3s ease-in-out;
+    padding: 0;
   }
-  
-  .results-container:hover {
-    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Footer/summary section */
-  /* Footer Section */
+
   .footer {
-    background-color: #1e88e5;  /* Custom background color for the footer */
-    padding: 1.5rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-top: auto;
-    font-size: 1rem;
-    color: white;
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 2rem;
+    padding: 0.25rem;
+    font-size: 0.7rem; /* Even smaller font size for mobile */
+    height: auto;
+    gap: 1.5rem; /* Add more gap for mobile layout */
   }
-  
+
   .footer-left,
   .footer-right {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .footer div {
-    font-weight: bold;
-  }
-  
-  .footer div:last-child {
-    color: rgb(250, 252, 250);
-  }
-  
-  /* Table styling */
-  .results-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-top: 1rem;
+    gap: 0.5rem; /* Smaller gap for smaller screen size */
   }
-  
-  .results-table thead {
-    background: #e2e6e861;
-    color: #fff;
+
+  .footer-left {
+    align-items: flex-start;
   }
-  
+
+  .footer-right {
+    align-items: flex-end;
+  }
+
+  .footer div {
+    font-size: 0.75rem;
+  }
+
+  .results-table {
+    font-size: 0.75rem;
+  }
+
   .results-table th,
   .results-table td {
-    padding: 14px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
+    padding: 4px;
+    font-size: 0.75rem;
   }
-  
+
   .results-table th {
-    font-weight: bold;
-    text-transform: uppercase;
+    font-size: 0.8rem;
   }
-  
-  .results-table tbody tr {
-    transition: all 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 0.55rem;
+    gap: 0.8rem;
+    font-size: 0.65rem; /* Even smaller font size on very small screens */
   }
-  
-  .results-table tbody tr:hover {
-    background-color: #eef1f6;
-    cursor: pointer;
+
+  .footer-left {
+    align-items: flex-start;
   }
-  
-  /* Responsive Styling */
-  @media (max-width: 1024px) {
-    .footer {
-      padding: 1rem;
-      gap: 1.5rem;
-    }
-  
-    .results-container {
-      padding: 1.5rem;
-    }
-  
-    .results-table th,
-    .results-table td {
-      padding: 12px;
-    }
-  
-    .footer-left,
-    .footer-right {
-      gap: 1.2rem;
-    }
+
+  .footer-right {
+    align-items: flex-end;
   }
-  
-  @media (max-width: 768px) {
-    .footer {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 1rem;
-    }
-  
-    .footer-left,
-    .footer-right {
-      width: 100%;
-    }
-  
-    .results-container {
-      padding: 1.5rem;
-    }
-  
-    .results-table {
-      font-size: 0.9rem;
-    }
-  
-    .results-table th,
-    .results-table td {
-      padding: 12px;
-    }
+
+  .footer div {
+    font-size: 0.7rem;
   }
-  
-  @media (max-width: 480px) {
-    .footer {
-      padding: 1rem;
-    }
-  
-    .footer-left,
-    .footer-right {
-      width: 100%;
-      gap: 1rem;
-    }
-  
-    .footer div {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
-  
-    .results-container {
-      padding: 1rem;
-    }
-  
-    .results-table th,
-    .results-table td {
-      padding: 10px;
-      font-size: 0.9rem;
-    }
-  
-    .results-table th {
-      font-size: 0.95rem;
-    }
+
+  .results-table th,
+  .results-table td {
+    padding: 4px;
+    font-size: 0.7rem;
+    word-break: break-word;
   }
-  
+
+  .results-table th {
+    font-size: 0.75rem;
+  }
+}

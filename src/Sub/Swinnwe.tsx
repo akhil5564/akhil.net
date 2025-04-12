@@ -87,8 +87,19 @@ const ResultsComponent: React.FC = () => {
       )
     );
 
-  const getPrize = (ticket: string, count: number, letter: string) => {
-    if (letter === 'BOX') return 3000 * count;
+  const getPrize = (ticket: string, count: number, letter: string, num: string, result: string) => {
+    if (letter === 'BOX') {
+      const isExactMatch = num === result; // Exact match (same order)
+      const isValidBoxNumber = /^[0-9]{3}$/.test(num); // Ensure it's a valid 3-digit number
+      const isPermutation = areDigitsEqual(num, result); // Check if digits are equal (any order)
+
+      if (isValidBoxNumber && isExactMatch) {
+        return 3000 * count; // Prize 3000 per count for exact match
+      } else if (isValidBoxNumber && isPermutation) {
+        return 800 * count; // Prize 800 per count for a valid permutation
+      }
+    }
+
     if (letter === 'SUPER') return 5000 * count;
 
     switch (ticket) {
@@ -101,7 +112,18 @@ const ResultsComponent: React.FC = () => {
     }
   };
 
-  const getCommission = (ticket: string, count: number) => {
+  const getCommission = (ticket: string, count: number, letter: string, num: string, result: string) => {
+    if (letter === 'BOX') {
+      const isExactMatch = num === result; // Exact match (same order)
+      const isPermutation = areDigitsEqual(num, result); // Check if digits are equal (any order)
+
+      if (isExactMatch) {
+        return 300 * count; // Commission 300 per count for exact match
+      } else if (isPermutation) {
+        return 30 * count; // Commission 30 per count for permutation match
+      }
+    }
+
     switch (ticket) {
       case '1': return 400 * count;
       case '2': return 50 * count;
@@ -135,7 +157,7 @@ const ResultsComponent: React.FC = () => {
 
     threeDigitMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      prize += getPrize(result.ticket, count, match.letter);
+      prize += getPrize(result.ticket, count, match.letter, match.num, result.result); // Pass result for comparison
     });
 
     if (result.ticket === '1') {
@@ -147,7 +169,7 @@ const ResultsComponent: React.FC = () => {
 
     boxMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      prize += 800 * count;
+      prize += getPrize(result.ticket, count, 'BOX', match.num, result.result); // Pass result for comparison
     });
 
     return total + prize;
@@ -161,7 +183,7 @@ const ResultsComponent: React.FC = () => {
 
     threeDigitMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      commission += getCommission(result.ticket, count);
+      commission += getCommission(result.ticket, count, match.letter, match.num, result.result); // Pass result for comparison
     });
 
     if (result.ticket === '1') {
@@ -176,7 +198,6 @@ const ResultsComponent: React.FC = () => {
 
   const totalAmount = totalPrize + totalCommission;
 
-  // 🟩 Now it's safe to calculate this here:
   const totalInputAmount = data.reduce((sum, item) => {
     return sum + item.tableRows.reduce((acc, row) => acc + (row.amount || 0), 0);
   }, 0);
@@ -219,8 +240,8 @@ const ResultsComponent: React.FC = () => {
                 num: result.result,
                 count: match.count,
                 letter: match.letter,
-                prize: getPrize(result.ticket, count, match.letter),
-                commission: getCommission(result.ticket, count),
+                prize: getPrize(result.ticket, count, match.letter, match.num, result.result),
+                commission: getCommission(result.ticket, count, match.letter, match.num, result.result),
               });
             });
 
@@ -245,8 +266,8 @@ const ResultsComponent: React.FC = () => {
                 num: ` ${match.num}`,
                 letter: 'BOX',
                 count: match.count,
-                prize: 800 * count,
-                commission: 0,
+                prize: getPrize(result.ticket, count, 'BOX', match.num, result.result),
+                commission: getCommission(result.ticket, count, 'BOX', match.num, result.result),
               });
             });
 
@@ -265,22 +286,19 @@ const ResultsComponent: React.FC = () => {
       </table>
 
       <div className="footer">
-  <div className="footer-left">
-    <div>Sale: ₹{totalInputAmount.toFixed(2)}</div>
-    <div>Prize: ₹{totalPrize.toFixed(2)}</div>
-    <div>Commission: ₹{totalCommission.toFixed(2)}</div>
-  </div>
-  <div className="footer-right">
-    <div>Winning: ₹{totalAmount.toFixed(2)}</div>
-    <div style={{ color: profitOrLoss >= 0 ? 'green' : 'red' }}>
-      Profit / Loss: ₹{profitOrLoss.toFixed(2)}
+        <div className="footer-left">
+          <div> Sale: ₹{totalInputAmount.toFixed(2)}</div>
+          <div>Prize: ₹{totalPrize.toFixed(2)}</div>
+          <div>Commission: ₹{totalCommission.toFixed(2)}</div>
+        </div>
+        <div className="footer-right">
+          <div>Winning: ₹{totalAmount.toFixed(2)}</div>
+          <div style={{ color: profitOrLoss >= 0 ? 'green' : 'red' }}>
+            Profit / Loss: ₹{profitOrLoss.toFixed(2)}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
-    </div>
-
-    
   );
 };
 
