@@ -185,52 +185,91 @@ const Spnl: React.FC = () => {
   const totalPrize = winningResults.reduce((total, result) => {
     const threeDigitMatches = getThreeDigitMatches(result.result);
     const abcMatches = getABCMatches(result.result);
+    const abMatches = getABMatches(result.result);
+    const acMatches = getACMatches(result.result);
+    const bcMatches = getBCMatches(result.result);
     const boxMatches = data.flatMap(item =>
       item.tableRows.filter(row => row.letter === 'BOX' && areDigitsEqual(row.num, result.result))
     );
-
+  
     let prize = 0;
-
+  
     threeDigitMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      prize += getPrize(result.ticket, count, match.letter, match.num, result.result); // Pass result for comparison
+      prize += getPrize(result.ticket, count, match.letter, match.num, result.result);
     });
-
+  
     if (result.ticket === '1') {
       abcMatches.forEach(match => {
         const count = parseInt(match.count, 10);
-        prize += count * (['AB', 'BC', 'AC'].includes(match.letter) ? 700 : 100);
+        prize += count * 100;
+      });
+  
+      abMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        prize += count * 700;
+      });
+  
+      acMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        prize += count * 700;
+      });
+  
+      bcMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        prize += count * 700;
       });
     }
-
+  
     boxMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      prize += getPrize(result.ticket, count, 'BOX', match.num, result.result); // Pass result for comparison
+      prize += getPrize(result.ticket, count, 'BOX', match.num, result.result);
     });
-
+  
     return total + prize;
   }, 0);
-
+  
   const totalCommission = winningResults.reduce((total, result) => {
     const threeDigitMatches = getThreeDigitMatches(result.result);
     const abcMatches = getABCMatches(result.result);
-
+    const abMatches = getABMatches(result.result);
+    const acMatches = getACMatches(result.result);
+    const bcMatches = getBCMatches(result.result);
+  
     let commission = 0;
-
+  
     threeDigitMatches.forEach(match => {
       const count = parseInt(match.count, 10);
-      commission += getCommission(result.ticket, count, match.letter, match.num, result.result); // Pass result for comparison
+      commission += getCommission(result.ticket, count, match.letter, match.num, result.result);
     });
-
+  
     if (result.ticket === '1') {
       abcMatches.forEach(match => {
         const count = parseInt(match.count, 10);
-        commission += count * (['AB', 'BC', 'AC'].includes(match.letter) ? 30 : 0);
+        commission += count * 0; // still 0 as per your logic
+      });
+  
+      abMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        commission += count * 30;
+      });
+
+      
+  
+      acMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        commission += count * 30;
+      });
+  
+      bcMatches.forEach(match => {
+        const count = parseInt(match.count, 10);
+        commission += count * 30;
       });
     }
-
+  
     return total + commission;
   }, 0);
+  
 
   const totalAmount = totalPrize + totalCommission;
 
