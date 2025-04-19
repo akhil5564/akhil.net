@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './swin.css';
+import { useLocation } from 'react-router-dom';
 
 interface Result {
   ticket: string;
@@ -17,6 +18,7 @@ interface TableRow {
 }
 
 interface Data {
+  createdAt: string | number | Date;
   customId: number;
   selectedTime: any;
   tableRows: TableRow[];
@@ -32,7 +34,10 @@ const ResultsComponent: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
-
+  const location = useLocation();
+  const { fromDate, toDate, selectedTime } = location.state || {};
+  console.log("dataaaaaaaaaaaa",location.state );
+  
   const getLoggedInUser = (): string => {
     const user = localStorage.getItem('loggedInUser');
     return user ? user : 'defaultUser';
@@ -54,8 +59,38 @@ const ResultsComponent: React.FC = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://manu-netflix.onrender.com/getData?username=${loggedInUser}`);
-        const filteredData = response.data.filter((item: Data) => item.username === loggedInUser);
+        const response = await axios.get(`https://manu-netflix.onrender.com/getData?username=${loggedInUser}`);           
+        const filteredData = response.data.filter((item: Data) => {
+          const createdAt = new Date(item?.createdAt);    
+          // Normalize dates to YYYY-MM-DD only
+          const createdDateOnly = createdAt.toISOString().split("T")[0];
+          const from = fromDate ? new Date(fromDate).toISOString().split("T")[0] : null;
+          const to = toDate ? new Date(toDate).toISOString().split("T")[0] : null;    
+          const matchesDate = (() => {
+            if (from && to) {
+              return createdDateOnly >= from && createdDateOnly <= to;
+            }
+            if (from) {
+              return createdDateOnly >= from;
+            }
+            if (to) {
+              return createdDateOnly <= to;
+            }
+            return true; // no date filter applied
+          })();
+
+          const matchesTime =
+            !selectedTime ||
+            selectedTime.toLowerCase() === "all" ||
+            item.selectedTime?.toLowerCase() === selectedTime.toLowerCase();
+    
+          return (
+            item.username === loggedInUser &&
+            matchesDate &&
+            matchesTime
+          );
+        });
+        console.log("responseresponseresponse1",filteredData);
         setData(filteredData);
       } catch (err) {
         setError('Failed to fetch table data');
@@ -64,6 +99,7 @@ const ResultsComponent: React.FC = () => {
 
     fetchResults();
     fetchData();
+
   }, [loggedInUser]);
 
   const getABMatches = (result: string) =>

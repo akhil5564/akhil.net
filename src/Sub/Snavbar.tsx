@@ -100,8 +100,8 @@ const Navbar: React.FC<NavbarProps> = ({ handlePaste }) => {
         <div className="dropdown-1">
           <ul>
             <li><Link to='/ssales'>SALES REPORT</Link></li>
-            <li><Link to='/datefilter'>WINNER'S REPORT</Link></li>
-            <li><Link to='/datefilter'>PROFIT AND LOSS</Link></li>
+            <li><Link to='/datefilter' state={{to:"winners-report"}}>WINNER'S REPORT</Link></li>
+            <li><Link to='/datefilter' state={{to:"profit-and-loss"}}>PROFIT AND LOSS</Link></li>
             <li><Link to='/select-date-time'>RESULT</Link></li>
             <li><Link to='/'>LOGOUT</Link></li>
           </ul>

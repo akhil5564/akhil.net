@@ -25,21 +25,20 @@ import TotalAmountDisplay from './Main/TotalAmountDisplay';
 import DateTimeFilter from './Sub/DateTimeFilter';
 import ResultsPage from './Main/Result';
 import SelectDateAndTime from './Main/SelectDateAndTime';
+import Spnl from './Sub/Spnl';
 
 // Create the router with createBrowserRouter
 const App: React.FC = () => {
-  const [fromDate, setFromDate] = useState<string>('');
-  const [toDate, setToDate] = useState<string>('');
-  const [selectedTime, setSelectedTime] = useState<string>('');
+  // const [fromDate, setFromDate] = useState<string>('');
+  // const [toDate, setToDate] = useState<string>('');
+  // const [selectedTime, setSelectedTime] = useState<string>('');
 
-  const handleFromDateChange = (value: string) => setFromDate(value);
-  const handleToDateChange = (value: string) => setToDate(value);
-  const handleTimeChange = (value: string) => setSelectedTime(value);
+
 
   const handleSubmit = () => {
-    console.log('From Date:', fromDate);
-    console.log('To Date:', toDate);
-    console.log('Selected Time:', selectedTime);
+    // console.log('From Date:', fromDate);
+    // console.log('To Date:', toDate);
+    // console.log('Selected Time:', selectedTime);
   };
 
   // Create the router with the state passed to the routes
@@ -74,13 +73,6 @@ const App: React.FC = () => {
       path: "/datefilter",
       element: (
         <DateTimeFilter
-          fromDate={fromDate}
-          toDate={toDate}
-          selectedTime={selectedTime}
-          onFromDateChange={handleFromDateChange}
-          onToDateChange={handleToDateChange}
-          onTimeChange={handleTimeChange}
-          onSubmit={handleSubmit}
         />
       ),
     },
@@ -117,6 +109,10 @@ const App: React.FC = () => {
     {
       path: "/swinner",
       element: <Swinnwe />, // Sub Winner Route
+    },
+    {
+      path: "/profitandloss",
+      element: <Spnl />, // Sub Winner Route
     },
     {
       path: "/sreporter",
