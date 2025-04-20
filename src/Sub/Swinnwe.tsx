@@ -244,16 +244,19 @@ const ResultsComponent: React.FC = () => {
     <div className="results-container">
 
       <table className="results-table">
-        <thead>
-          <tr>
-            <th>Ticket</th>
-            <th>Num</th>
-            <th>Count</th>
-            <th>Letter</th>
-            <th>Prize</th>
-            <th>Commission</th>
-          </tr>
-        </thead>
+      {winningResults.length > 0 && (
+  <thead>
+    <tr>
+      <th>Ticket</th>
+      <th>Num</th>
+      <th>Count</th>
+      <th>Letter</th>
+      <th>Prize</th>
+      <th>Commission</th>
+    </tr>
+  </thead>
+)}
+
         <tbody>
           {winningResults.flatMap((result, index) => {
             const abcMatches = getABCMatches(result.result);
