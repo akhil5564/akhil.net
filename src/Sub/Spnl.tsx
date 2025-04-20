@@ -45,6 +45,8 @@ const Spnl: React.FC = () => {
 
   const loggedInUser = getLoggedInUser();
 
+
+  
   useEffect(() => {
     const fetchResults = async () => {
       try {

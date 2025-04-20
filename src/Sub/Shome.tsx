@@ -100,6 +100,22 @@ const [countValue2, setCountValue2] = useState(''); // <-- New for Count2
 
     if (value.length === 3 && inputRef4.current) inputRef4.current.focus();
   };
+  useEffect(() => {
+    switch (selectedTime) {
+      case '1PM':
+        document.body.style.backgroundColor = 'rgb(196, 190, 248)'; // Light yellow
+        document.body.style.color = '#000';
+        break;
+      case '6PM':
+        document.body.style.backgroundColor = 'rgb(243, 228, 204)'; // Deep purple
+        break;
+      case '8PM':
+        document.body.style.backgroundColor = 'rgb(245, 173, 173)'; // Deep purple
+        document.body.style.color = '#fff';
+        break;
+    }
+  }, [selectedTime]);
+
 
   useEffect(() => {
     if (visibleDigit === 'digit1' && inputRef1.current) {
@@ -685,7 +701,7 @@ const [countValue2, setCountValue2] = useState(''); // <-- New for Count2
         SUPER
       </button>
 
-      <button 
+   <button 
   type="button" 
   className="btn btn-success" 
   onClick={() => {
