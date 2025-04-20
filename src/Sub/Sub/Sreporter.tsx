@@ -138,18 +138,32 @@ useEffect(() => {
   };
   
   // Handle Delete Row Action (delete an individual row)
-  const handleDeleteRow = (rowId: number) => {
+  const handleDeleteRow = async (rowId: number, containerId: string) => {
     if (shouldDisableDelete(selectedTime || '')) {
       setErrorMessage(`Cannot delete data for ${selectedTime}. The cutoff time has passed.`);
-      return; // Prevent deletion if time has passed
+      return;
     }
-
-    const updatedData = filteredData.map((data) => ({
-      ...data,
-      tableRows: data.tableRows.filter((row) => row._id !== rowId),
-    }));
-    setFilteredData(updatedData);
+  
+    try {
+      const response = await axios.delete(`https://manu-netflix.onrender.com/deleteRow/${containerId}/${rowId}`);
+      if (response.status === 200) {
+        const updatedData = filteredData.map((data) =>
+          data._id === containerId
+            ? {
+                ...data,
+                tableRows: data.tableRows.filter((row) => row._id !== rowId),
+              }
+            : data
+        );
+        setFilteredData(updatedData);
+      } else {
+        setErrorMessage('Failed to delete row.');
+      }
+    } catch (err) {
+      setErrorMessage('Error deleting row.');
+    }
   };
+  
 
   // Function to calculate the total based on count and num length
   const calculateTotal = (count: string, num: string): string => {
@@ -235,12 +249,13 @@ useEffect(() => {
       <td>{row.amount}</td>
       <td>{user === 'kjp' ? calculateTotal(row.count, row.num) : ''}</td> {/* Show total only for kjp */}
       <td>
-        <IconTrash
-          className="icon-trash"
-          onClick={() => handleDeleteRow(row._id)} // Handle delete for row
-          stroke={2}
-          style={shouldDisableDelete(selectedTime || '') ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
-        />
+      <IconTrash
+  className="icon-trash"
+  onClick={() => handleDeleteRow(row._id, data._id)}
+  stroke={2}
+  style={shouldDisableDelete(selectedTime || '') ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
+/>
+
       </td>
     </tr>
   ))}
