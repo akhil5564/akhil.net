@@ -1,0 +1,12 @@
+/* App.css or index.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-color:white; /* Solid color */
+    /* background-image: url('/path/to/image.jpg'); */ /* Image background */
+    /* background: linear-gradient(to right, #ff7e5f, #feb47b); */ /* Gradient background */
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: sans-serif;
+  }
+  

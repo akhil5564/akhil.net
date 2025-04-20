@@ -25,6 +25,7 @@ import DateTimeFilter from './Sub/DateTimeFilter';
 import ResultsPage from './Main/Result';
 import SelectDateAndTime from './Main/SelectDateAndTime';
 import Spnl from './Sub/Spnl';
+import './App.css'
 
 // Create the router with createBrowserRouter
 const App: React.FC = () => {
