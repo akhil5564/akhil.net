@@ -80,6 +80,7 @@ font-weight: 700;  }
     justify-content: space-between;
     margin-top: 1rem;
     font-weight: 700;
+    background-color: transparent;
   }
   .input-end{
     width: 4rem;
