@@ -14,21 +14,21 @@
     margin: 0 auto;
     border-collapse: collapse;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-spacing: 0 7px;        /* This will add a 10px gap between cells */
-    border-collapse:separate;  /* Change from 'collapse' to 'separate' */
+    border-spacing: 0 7px;   
+    /* border-collapse:separate;   */
 
 
   }
 
   .footer {
-    position: sticky; /* Make the footer sticky */
-    bottom: 0; /* Position it at the bottom of the viewport */
+    /* position: fixed; 
+    bottom: 0;  */
     width: 100%;
     background-color: #3fac10; /* Dark background color */
     color: white; /* Text color */
     padding: 10px 20px; /* Padding around the footer */
     font-size: 16px;
-    display: flex;
+    /* display: flex; */
     justify-content: space-between; /* Align the items to the left and right */
     font-weight: bold;
     border-top: 2px solid #fff; /* Add a border on top for separation */
@@ -36,8 +36,8 @@
   }
   
   .footer-content {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
     width: 100%;
   }
   
@@ -49,24 +49,32 @@
   }
 
   .table-containers {
-    max-height: 700px; /* Adjust height to your preference */
-    overflow-y: auto;  /* Enables vertical scrolling */
-    margin-bottom: 20px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding-bottom: 20px; 
+     /* Hide scrollbar but keep scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+
+  padding-left: 0.5px;
+  padding-right: 0.5px;
   }
   
-
+  .table-containers::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
   
 
 
   
   /* Style for table headers */
   .reporter-table th {
-    background-color: #7d6cee;
+    background-color: #634c94;
     color: white;
     padding: 12px 15px;
     text-align: left;
     font-weight: bold;
-    border-bottom: 2px solid #ddd;
+    /* border-bottom: 2px solid #ddd; */
   }
   
   /* Style for table rows */
@@ -81,9 +89,9 @@
 
   }
   .footer-table {
-    position: fixed;
-    bottom: 0;  /* Position the footer at the bottom of the screen */
-    left: 0;  /* Align the footer to the left */
+    /* position: fixed;
+    bottom: 0;  
+    left: 0;  */
     width: 100%;  /* Make the footer stretch the full width of the screen */
     background-color: black;
     color: whitesmoke;
@@ -92,7 +100,8 @@
     font-size: larger;
     justify-content:space-around;
     align-items: center;
-    z-index: 1000;  /* Ensure it stays on top of other content */
+    z-index: 1000;
+      /* Ensure it stays on top of other content */
   }
   
   
@@ -111,4 +120,8 @@
       padding: 4px;
     }
   }
-  
+  .bill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }

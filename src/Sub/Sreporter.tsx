@@ -1,8 +1,10 @@
 import { FC, useState, useEffect } from 'react';
-import '../Main/reporter.css';  // CSS for styling
+import '../Main/reporter.css';  
+// import '../Main/reporter2.css';  
 import { IconTrash } from '@tabler/icons-react';  // Trash icon
 import axios from 'axios';  // Axios for making API calls
 import { useLocation } from 'react-router-dom';  // To access query parameters in the URL
+import ReportHeader from './ReportHeader';
 
 // Define the structure of the data
 interface TableData {
@@ -209,73 +211,98 @@ useEffect(() => {
   const { totalCount, totalAmount, totalOfTotals } = calculateFooterTotals();
 
   return (
-    <div className="table-containers">
-      {filteredData.length === 0 ? (
-        <p>No data available for the selected time and date range</p>
-      ) : (
-        <>
-          {/* Display error message if delete is not allowed */}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-          {/* Data Tables */}
-          {filteredData.map((data) => (
-            <div className="table-wrapper" key={data._id}>
-              <table className="reporter-table">
-                <thead>
-                  <tr>
-                    <th colSpan={8} className="bill-infos">
-                      Bill No: {data.customId}
-                      {new Date(data.createdAt).toLocaleString()}
-
-                      <button
-                        className="delete-container-btn"
-                        onClick={() => handleDeleteContainer(data._id)} // Delete entire container
-                      >
-                        <IconTrash
-                          stroke={2}
-                          style={shouldDisableDelete(data.selectedTime) ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
-                        />
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-  {data.tableRows.map((row, index) => (
-    <tr key={row._id}>
-      <td>{index + 1}</td> {/* Sequential ID */}
-      <td>{row.num}</td>
-      <td>{row.letter}</td>
-      <td>{row.count}</td>
-      <td>{row.amount}</td>
-      <td>{user === 'kjp' ? calculateTotal(row.count, row.num) : ''}</td> {/* Show total only for kjp */}
-      <td>
-      <IconTrash
-  className="icon-trash"
-  onClick={() => handleDeleteRow(row._id, data._id)}
-  stroke={2}
-  style={shouldDisableDelete(selectedTime || '') ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
-/>
-
-      </td>
-    </tr>
-  ))}
-</tbody>
-
-              </table>
+    <>
+    <ReportHeader/>
+    <  div className="table-containers">
+        {filteredData.length === 0 ? (
+          <p>No data available for the selected time and date range</p>
+        ) : (
+          <>
+            {/* Display error message if delete is not allowed */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+  
+            {/* Data Tables */}
+            {filteredData.map((data) => (
+              <div className="table-wrapper" key={data._id}>
+                <table className="reporter-table">
+                  <thead>
+                    <tr>
+                      <th colSpan={8} className="bill-infos">
+                      <div className="bill-header">
+                        {/* Bill No: {data.customId} */}
+                        {new Date(data.createdAt).toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  })}
+  
+                        <button
+                          className="delete-container-btn"
+                          onClick={() => handleDeleteContainer(data._id)} // Delete entire container
+                        >
+                          <IconTrash
+                            stroke={2}
+                            style={shouldDisableDelete(data.selectedTime) ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
+                          />
+                        </button>
+                        </div>
+                      <div className="bill-header">
+                        {/* Bill No: {data.customId} */}
+                        {user}
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+    {data.tableRows.map((row, index) => (
+      <tr key={row._id}>
+        <td>{index + 1}</td> {/* Sequential ID */}
+        <td>{row.num}</td>
+        <td>{row.letter}</td>
+        <td>{row.count}</td>
+        <td>{row.amount}</td>
+        <td>{user === 'kjp' ? calculateTotal(row.count, row.num) : ''}</td> {/* Show total only for kjp */}
+        <td>
+        <IconTrash
+    className="icon-trash"
+    onClick={() => handleDeleteRow(row._id, data._id)}
+    stroke={2}
+    style={shouldDisableDelete(selectedTime || '') ? { cursor: 'not-allowed', opacity: 0.5 } : {}}
+  />
+  
+        </td>
+      </tr>
+    ))}
+  </tbody>
+  
+                </table>
+              </div>
+            ))}
+  
+            {/* Common Footer at the bottom */}
+            <div className="footer" style={{backgroundColor:'#92b557'}}>
+              <div className="footer-content">
+              <div className="bill-header">
+                <strong> Count: </strong>
+                <strong>{totalCount}</strong>
+                </div>
+                <div className="bill-header">
+                <strong>Amount: </strong>
+                <strong>{totalAmount.toFixed(2)}</strong>
+                </div>
+                <div className="bill-header">
+                {user === 'kjp' && <strong>Total Commission: </strong>}
+                {user === 'kjp' && <strong>{totalOfTotals.toFixed(2)}</strong>}
+                </div>                
+              </div>
             </div>
-          ))}
-
-          {/* Common Footer at the bottom */}
-          <div className="footer">
-            <div className="footer-content">
-              <strong> Count: {totalCount}</strong>
-              <strong>Amount: {totalAmount.toFixed(2)}</strong>
-              {user === 'kjp' && <strong>Total Commission: {totalOfTotals.toFixed(2)}</strong>} {/* Show commission only for kjp */}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

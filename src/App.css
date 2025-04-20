@@ -1,4 +1,5 @@
 /* App.css or index.css */
+
 body {
     margin: 0;
     padding: 0;
@@ -9,4 +10,12 @@ body {
     background-repeat: no-repeat;
     font-family: sans-serif;
   }
-  
+  .page-header {
+    background-color: #3f51b5; /* Similar blue to your screenshot */
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
