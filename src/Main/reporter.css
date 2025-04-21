@@ -83,7 +83,8 @@ padding-right: 0.5px;
 .reporter-table td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 2.5px solid #faf8f8;
+  border-bottom: 2.5px solid whitesmoke;
+  font-weight: 800;
 
   font-size: 1rem;
   color:rgb(248, 244, 244);
