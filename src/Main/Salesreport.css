@@ -10,6 +10,7 @@
   border-radius: 16px;
   box-shadow: 0 8px 20px red;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: whitesmoke;
 }
 
 /* Title Styling */
@@ -22,11 +23,13 @@
   padding: 12px 0;
   border-radius: 8px;
   letter-spacing: 1px;
+  
 }
 
 /* Form Group Styling */
 .form-group {
   margin-bottom: 20px;
+
 }
 
 /* Label Styling */
@@ -36,13 +39,17 @@
   margin-bottom: 8px;
   color: #333;
   font-weight: 500;
+  
+  
 }
 input{
   border: 1px solid #4711c5;
 font-weight: 700;
+padding: 8px;
+outline:none
 }
 /* Input Styling */
-.form-input {
+.form-input,.filter-input {
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
@@ -50,6 +57,13 @@ font-weight: 700;
   border-radius: 8px;
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
+  font-weight: 700;
+  border: 1px solid #4711c5;
+  font-weight: 700;
+  padding: 8px;
+  outline:none
+  
+  
 }
 
 .form-input:focus {
