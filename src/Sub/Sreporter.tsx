@@ -212,7 +212,7 @@ useEffect(() => {
 
   return (
     <>
-    <ReportHeader/>
+    <ReportHeader createdAt={''} user={''}/>
     <  div className="table-containers">
         {filteredData.length === 0 ? (
           <p>No data available for the selected time and date range</p>
@@ -294,7 +294,7 @@ useEffect(() => {
                 <strong>{totalAmount.toFixed(2)}</strong>
                 </div>
                 <div className="bill-header">
-                {user === 'kjp' && <strong>Total Commission: </strong>}
+                {user === 'kjp' && <strong>Total Cost: </strong>}
                 {user === 'kjp' && <strong>{totalOfTotals.toFixed(2)}</strong>}
                 </div>                
               </div>
